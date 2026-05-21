@@ -1,6 +1,6 @@
 package proyectoclicks1.demo.agent.service;
 
-import com.agent.automation.BrowserAutomation;
+import proyectoclicks1.demo.agent.automation.BrowserAutomation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,26 +12,27 @@ public class AgentService {
 
     public String processMessage(String message) {
 
+        System.out.println("MENSAJE RECIBIDO: " + message);
+
+        if (message == null) {
+            return "Mensaje vacío";
+        }
+
         String lower = message.toLowerCase();
 
-        if (lower.contains("presupuesto")) {
-
-            browserAutomation.openYoutubeAndSearch(
-                    "aprende como hacer un presupuesto personal paso a paso clips"
-            );
-
-            return "Automatización ejecutada";
+        if (lower.contains("google")) {
+            System.out.println("EJECUTANDO GOOGLE");
+            browserAutomation.openGoogle();
+            return "Abriendo Google";
         }
 
-        if (lower.contains("computacion")) {
-
-            browserAutomation.openYoutubeAndSearch(
-                    "que es la computacion en la nube y como funciona en 2026 clips"
-            );
-
-            return "Automatización ejecutada";
+        if (lower.contains("youtube")) {
+            System.out.println("EJECUTANDO YOUTUBE");
+            browserAutomation.openYoutubeViaGoogleSearch();
+            return "Buscando YouTube";
         }
 
+        System.out.println("NO MATCH");
         return "No entendí el comando";
     }
 }

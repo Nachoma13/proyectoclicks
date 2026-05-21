@@ -1,9 +1,7 @@
 package proyectoclicks1.demo.agent.controller;
 
-import proyectoclicks1.demo.agent.automation.BrowserAutomation;
-
+import proyectoclicks1.demo.agent.service.AgentService;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -14,39 +12,34 @@ import java.util.Map;
 public class AgentController {
 
     @Autowired
-    private BrowserAutomation browserAutomation;
+    private AgentService agentService;
 
-    @GetMapping("/test")
-    public Map<String, String> test() {
-
-        return Map.of(
-                "status", "success",
-                "message", "Backend funcionando"
-        );
-    }
-
+    // -------------------------
+    // CHAT PRINCIPAL
+    // -------------------------
     @PostMapping("/chat")
-    public Map<String, String> chat(
-            @RequestBody Map<String, String> body
-    ) {
+    public Map<String, String> chat(@RequestBody Map<String, String> body) {
 
         String message = body.get("message");
 
-        System.out.println(message);
+        String response = agentService.processMessage(message);
 
         return Map.of(
-                "status", "success",
-                "message", "Mensaje recibido"
+                "status", "ok",
+                "message", response
         );
     }
 
+    // -------------------------
+    // TEST GOOGLE DIRECTO
+    // -------------------------
     @GetMapping("/google")
-    public Map<String, String> openGoogle() {
+    public Map<String, String> google() {
 
-        browserAutomation.openGoogle();
+        agentService.processMessage("google");
 
         return Map.of(
-                "status", "success",
+                "status", "ok",
                 "message", "Google abierto"
         );
     }

@@ -1,46 +1,63 @@
-import { useState } from "react"
-import API from "../../services/api"
+import { useState } from "react";
 
 export default function ChatBox() {
 
-    const [message, setMessage] = useState("")
+    const [message, setMessage] = useState("");
+    const [response, setResponse] = useState("");
 
     const sendMessage = async () => {
 
-        console.log("BOTON FUNCIONA")
-
         try {
 
-            const response = await API.post(
-                "/agent/chat",
-                {
-                    message
-                }
-            )
+            const res = await fetch("http://localhost:8080/agent/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ message })
+            });
 
-            console.log(response.data)
+            const data = await res.json();
+
+            setResponse(data.message);
 
         } catch (error) {
 
-            console.error(error)
+            console.log(error);
+            setResponse("Error backend");
         }
-    }
+    };
+
+    const openGoogle = async () => {
+
+        try {
+
+            await fetch("http://localhost:8080/agent/google");
+
+            setResponse("Google abierto");
+
+        } catch (error) {
+
+            setResponse("Error Google");
+        }
+    };
 
     return (
+        <div style={{ padding: "20px" }}>
 
-        <div>
+            <h2>Agent</h2>
 
             <input
-                type="text"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder="Escribe un comando..."
+                placeholder="mensaje"
             />
 
-            <button onClick={sendMessage}>
-                Ejecutar
-            </button>
+            <button onClick={sendMessage}>Enviar</button>
+            <button onClick={openGoogle}>Google</button>
+
+            <p>{response}</p>
 
         </div>
-    )
+    );
 }

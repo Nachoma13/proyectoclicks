@@ -1,4 +1,4 @@
-package com.agent.model.request;
+package proyectoclicks1.demo.agent.model.request;
 
 public class AgentRequest {
 

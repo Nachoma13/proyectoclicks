@@ -1,15 +1,5 @@
-import ChatBox from "./components/chat/ChatBox"
+import ChatBox from "./components/chat/ChatBox.jsx";
 
 export default function App() {
-
-    return (
-
-        <div>
-
-            <h1>AI Desktop Agent</h1>
-
-            <ChatBox />
-
-        </div>
-    )
+    return <ChatBox />;
 }
